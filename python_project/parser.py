@@ -1,15 +1,22 @@
 from datetime import datetime
 
-# start = input("Podaj datę początkową[rrrr/mm/dd, hh:mm:ss]: ")
-# end = input("Podaj datę końcową[rrrr/mm/dd, hh:mm:ss]: ")
+start = input("Podaj datę początkową[rrrr/mm/dd, hh:mm:ss]: ")
+end = input("Podaj datę końcową[rrrr/mm/dd, hh:mm:ss]: ")
+file_name = input("Podaj nazwę pliku z folderu ze skryptem lub ścieżkę[absolute] do pliku: ")
 
-start = '2019/11/30, 00:00:00'
-end = '2019/12/01, 11:54:22'
-
-start_date = datetime.strptime(start, "%Y/%m/%d, %H:%M:%S")
-end_date = datetime.strptime(end, "%Y/%m/%d, %H:%M:%S")
-
-file = open(f'gunicorn.log2')
+# start = '2019/11/30,00:00:00'
+# end = '2019/12/01, 11:54:22'
+try:
+    # Taking care of data format error
+    start_date = datetime.strptime(start, "%Y/%m/%d, %H:%M:%S")
+    end_date = datetime.strptime(end, "%Y/%m/%d, %H:%M:%S")
+except ValueError:
+    print("Coś poszło nie tak- Sprawdź format daty")
+try:
+    # Taking care of file name or file path error
+    file = open(f'{file_name}')
+except FileNotFoundError:
+    print("Wygląda na to, że podany plik nieistnieje, lub ścieżka jest niepoprawna ")
 
 
 def dict_printer(status_response):
@@ -33,11 +40,11 @@ def parse_lines(file):
     for line in file:
         # Iterating through every line in files
         if 'gunicorn' in line:
-            # checking condition that trigger script-- need to be changed if not gunicorn server
+            # checking condition that skips not need lines-- need to be changed if not gunicorn server
             if datetime.strptime(line.split()[8].lower(), "[%d/%b/%Y:%H:%M:%S") >= start_date and datetime.strptime(
                     line.split()[8].lower(), "[%d/%b/%Y:%H:%M:%S") <= end_date:
-                # For every line checking if filling condition of limited dates start and end if yes adding to
-                # list(lines) and adding to variable request time, request connection time
+                # For every line checking if filling condition of limited dates start and end, if yes adding to
+                # list(lines) and adding to variable request time: request connection time
                 lines.append([line])
                 request_time += int(line.split()[-1])
 
@@ -57,5 +64,8 @@ def parse_lines(file):
     # return no. of request, requests/sec, and all noted server statuses
 
 
-for stat in parse_lines(file):
-    print(stat)
+try:
+    for parsed_line in parse_lines(file):
+        print(parsed_line)
+except NameError:
+    print("Spróbujmy jeszcze raz! ")
