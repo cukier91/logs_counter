@@ -24,12 +24,14 @@ def parse_lines():
         start_date = datetime.strptime(start, "%Y/%m/%d, %H:%M:%S")
         end_date = datetime.strptime(end, "%Y/%m/%d, %H:%M:%S")
     except ValueError:
-        print("Coś poszło nie tak- Sprawdź format daty")
+        print("Coś poszło nie tak, sprawdź format daty")
+        return
     try:
         # Taking care of file name or file path error
         file = open(f'{file_name}')
     except FileNotFoundError:
         print("Wygląda na to, że podany plik nieistnieje, lub ścieżka jest niepoprawna ")
+        return
 
     lines = []
     request_time = 0
@@ -47,7 +49,7 @@ def parse_lines():
                 request_time += int(line.split()[-1])
 
                 if f'{line.split()[13]}' in status_response.keys():
-                    # If server status is already in disct than increment by 1
+                    # If server status is already in dict than increment by 1
                     status_response[f'{line.split()[13]}'] = status_response[f'{line.split()[13]}'] + 1
 
                 else:
@@ -67,4 +69,6 @@ try:
         for parsed_line in parse_lines():
             print(parsed_line)
 except NameError:
+    print("Spróbujmy jeszcze raz! ")
+except TypeError:
     print("Spróbujmy jeszcze raz! ")
