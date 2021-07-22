@@ -1,14 +1,14 @@
-##logs_counter
+#logs_counter
 Simple python script for gunicorn server logs statistics.
 
-##General info
+#General info
 The main purpose of the application is to analyze the gunicorn server logs in the user-specified date range. In response, we get server status statistics, number of queries and number of connections / sec
 
-##Technology 
+#Technology 
 - Python 3.8.10,
 - pytest-6.2.4
 
-##Setup and most important !
+#Setup and most important !
 The program is launched from the console
 $python parser.py
 
