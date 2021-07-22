@@ -7,9 +7,14 @@ def dict_printer(status_response):
 
 def statistics(lines, request_time):
     # Function that provides statistics
-    string_lines = f'No. of requests: {len(lines)}'
-    string_request_times = f'requests/sec:{round((request_time / 1000000) / len(lines), 2)}'
-    return f'{string_lines}\n{string_request_times}'
+    if len(lines) == 0:
+        string_lines = f'No. of requests: 0'
+        string_request_times = f'requests/sec: 0'
+        return f'Nie znaleziono wyników w podanym zakresie\n{string_lines}\n{string_request_times}'
+    else:
+        string_lines = f'No. of requests: {len(lines)}'
+        string_request_times = f'requests/sec:{round((request_time / 1000000) / len(lines), 2)}'
+        return f'{string_lines}\n{string_request_times}'
 
 
 def parse_lines():
