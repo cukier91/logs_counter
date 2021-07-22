@@ -10,7 +10,7 @@ The main purpose of the application is to analyze the gunicorn server logs in th
 
 #Setup and most important !
 The program is launched from the console
-$python parser.py
+exaple: python parser.py
 
 There are two options for loading the file with log data:
 - by saving the file in the folder with the script and entering the file name when asked for the script,
