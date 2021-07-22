@@ -1,26 +1,7 @@
 from datetime import datetime
 
-start = input("Podaj datę początkową[rrrr/mm/dd, hh:mm:ss]: ")
-end = input("Podaj datę końcową[rrrr/mm/dd, hh:mm:ss]: ")
-file_name = input("Podaj nazwę pliku z folderu ze skryptem lub ścieżkę[absolute] do pliku: ")
-
-# start = '2019/11/30,00:00:00'
-# end = '2019/12/01, 11:54:22'
-try:
-    # Taking care of data format error
-    start_date = datetime.strptime(start, "%Y/%m/%d, %H:%M:%S")
-    end_date = datetime.strptime(end, "%Y/%m/%d, %H:%M:%S")
-except ValueError:
-    print("Coś poszło nie tak- Sprawdź format daty")
-try:
-    # Taking care of file name or file path error
-    file = open(f'{file_name}')
-except FileNotFoundError:
-    print("Wygląda na to, że podany plik nieistnieje, lub ścieżka jest niepoprawna ")
-
 
 def dict_printer(status_response):
-    # Function that print dictionary content, used to return server responses
     return f'responses: {status_response}'
 
 
@@ -31,8 +12,25 @@ def statistics(lines, request_time):
     return f'{string_lines}\n{string_request_times}'
 
 
-def parse_lines(file):
+def parse_lines():
     # Parsers function- main function in the script
+    global start_date, end_date
+    start = input("Podaj datę początkową[rrrr/mm/dd, hh:mm:ss]: ")
+    end = input("Podaj datę końcową[rrrr/mm/dd, hh:mm:ss]: ")
+    file_name = input("Podaj nazwę pliku z folderu ze skryptem lub ścieżkę[absolute] do pliku: ")
+
+    try:
+        # Taking care of data format error
+        start_date = datetime.strptime(start, "%Y/%m/%d, %H:%M:%S")
+        end_date = datetime.strptime(end, "%Y/%m/%d, %H:%M:%S")
+    except ValueError:
+        print("Coś poszło nie tak- Sprawdź format daty")
+    try:
+        # Taking care of file name or file path error
+        file = open(f'{file_name}')
+    except FileNotFoundError:
+        print("Wygląda na to, że podany plik nieistnieje, lub ścieżka jest niepoprawna ")
+
     lines = []
     request_time = 0
     status_response = {}
@@ -65,7 +63,8 @@ def parse_lines(file):
 
 
 try:
-    for parsed_line in parse_lines(file):
-        print(parsed_line)
+    if __name__ == '__main__':
+        for parsed_line in parse_lines():
+            print(parsed_line)
 except NameError:
     print("Spróbujmy jeszcze raz! ")
